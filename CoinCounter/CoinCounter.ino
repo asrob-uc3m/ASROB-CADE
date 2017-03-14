@@ -1,73 +1,67 @@
-int A, previous_A;
-int counter = 0;
-float actual_t = 0;
-float start_t =0;
-float delta_t;
-int reset_counter = 0;
-bool isACK = true;
-bool timerOK = false;
+volatile byte CoinPulseCount = 0;
+byte NewCoinInserted;
+byte Command = 0;
+int OpticalCountPin = 2;
+volatile unsigned long PulseTime;
+volatile byte CreditCount = 0;
+volatile byte Credits;
 
-void setup()
-{
-  Serial.begin(4800);
-  pinMode(A0, INPUT);
-}
-
-
-  
-void loop()
-{
-  
-  A = analogRead(A0);
-  //Serial.println(A);
-  if((previous_A  <=5 ) && A > 5){
-    if(isACK){
-      isACK = false;
-      delay(3.6);
-    }else{
-      counter += 1;
-      //Serial.println(counter);
-      delay(2.04);
-      start_t = 0;
-      timerOK=false;
+ void setup(){ 
+  Serial.begin(9600);
+  pinMode(OpticalCountPin, INPUT);
+  attachInterrupt(1, CoinPulse, RISING);
+ }
+ 
+ void loop(){
+  if(CoinPulseCount > 0 && millis() - PulseTime > 200){
+    Serial.println("Hop");
+    NewCoinInserted = CoinPulseCount;
+    CoinPulseCount = 0;
+  }
+    switch(NewCoinInserted){
+      case 1: //2 eypos
+       CreditCount+=40;
+       Serial.println("2 eypos");
+       NewCoinInserted = 0;
+      break;
+      case 2: //1 eypo
+       CreditCount+=20;
+       Serial.println("1 eypo");
+       NewCoinInserted = 0;
+      break;
+      case 3: //50cents
+       CreditCount+=10;
+       Serial.println("50cents");
+       NewCoinInserted = 0;
+      break;
+      case 4: //20cents
+       CreditCount+=4;
+       Serial.println("20cents");
+       NewCoinInserted = 0;
+      break;
+      case 5: //10cents
+       CreditCount+=2;
+       Serial.println("10cents");
+       NewCoinInserted = 0;
+      break;
+      case 6: //5cents
+       CreditCount+=1;
+       Serial.println("5cents");
+       NewCoinInserted = 0;
+      break;
     }
+  
   }
-  if((A==previous_A) && (A == 0) && (timerOK == false) && (counter > 0)){
-    //Serial.println("Starting timer");
-    timerOK = true;
-    start_t = millis();
-  }
-  if(((actual_t - start_t)>500) && (counter > 0) && (start_t > 0)){
-    check_coin(counter);
-    counter = 0;
-    start_t = 0;
-    actual_t = 0;
-    isACK = false;
-    timerOK = false;
-    //Serial.println("cleaning...");
-  }
-  actual_t = millis();
-  previous_A = A;
-}
-
-void check_coin(int counter){
-  Serial.println(counter);
-  if(100 <= counter){
-    Serial.println("Son 5 centimos");
-  }else if((75 <= counter) && (counter < 100)){
-    Serial.println("Son 10 centimos");
-  }else if((60 <= counter) && (counter < 75)){
-    Serial.println("Son 20 centimos");
-  }else if((48 <= counter) && (counter < 60)){
-    Serial.println("Son 50 centimos");
-  }else if((32 <= counter) && (counter < 48)){
-    Serial.println("Es 1 euro");
-  }else if(counter < 32){
-    Serial.println("Son 2 euros");
-  }else{
-    Serial.println("No se contar");
-  }
-}
-
-
-
+  
+ void CoinPulse(){
+  CoinPulseCount++;
+  Serial.println("Pulso");
+  PulseTime = millis();
+ }
+ void UseCredit(){
+  Credits=CreditCount/4;
+  CreditCount=CreditCount%4;
+  //TO DO: PUSH CREDIT_BUTTON x "Credits" TIMES
+  Credits=0;
+ }
+ 
