@@ -6,7 +6,9 @@ Según el proveedor, el selector de monedas es un modelo CH-923, pero el selecto
 Un modelo muy similar al nuestro, el CH-926, cuenta con un monton de documentación en Internet
 
 Pagina del proveedor: http://tienda.bricogeek.com/gadgets-geek/443-selector-de-monedas-programable.html
+
 Hoja de configuración del proveedor: https://dlnmh9ip6v2uc.cloudfront.net/datasheets/Components/General/3.jpg
+
 Hoja de configuración del CH-926: https://cdn-shop.adafruit.com/datasheets/CHmulticoin.jpg
 
 La mayoría de tutoriales referentes al selector CH-923 enlazan con codigo referente al CH-926 así que suponemos que no hay muchas diferencias.
