@@ -13,7 +13,5 @@ Hoja de configuración del CH-926: https://cdn-shop.adafruit.com/datasheets/CHmu
 
 La mayoría de tutoriales referentes al selector CH-923 enlazan con codigo referente al CH-926 así que suponemos que no hay muchas diferencias.
 
-Lo ideal sería conectar directamente el selector al GPIO de la Raspberry como aquí: https://jalibu.wordpress.com/tag/coin-counter/
-
 Tutorial para programar y trabajar con el selector: http://www.instructables.com/id/Make-Money-with-Arduino/?ALLSTEPS
 Video explicativo: https://www.youtube.com/watch?v=f4GhBp9PUfY
